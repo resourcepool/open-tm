@@ -17,18 +17,25 @@ local REAL_HEADING = true
 ---------------------------------
 -- Screen is 212x64 pixels
 local REFRESH_FREQUENCY_30MS = 30
+local REFRESH_FREQUENCY_2S = 250
 local SETTINGS = getGeneralSettings()
 local _,LOW_RSSI = getRSSI()
 local HIGH_RSSI = 90
 local HORIZON_WIDTH = 120
 local HORIZON_HEIGHT = 30
-
+local LIPO_CELL = 3.7
+local LIPO_CELL_LOW = 3.5
+local LIPO_CELL_MAX = 4.2
+local LIPO_DELTA = LIPO_CELL_MAX - LIPO_CELL_LOW
 ---------------------------------
 -- VARIABLES
 ---------------------------------
 local lastTime
 local timer
+local lastTimeBatt
 local batt
+local battVolt
+local showBattVoltage
 local rssi
 local rssiPercent
 local accX
@@ -49,6 +56,8 @@ local horizonHeight
 
 local function init()
   lastTime = 0
+  lastTimeBatt = 0
+  showBattVoltage = false
 end
 
 -- Round Acc data when close to bounds
@@ -65,6 +74,33 @@ local function roundData(acc)
   return acc
 end
 
+-- Detect Lipo Cell count
+local function detectCellCount(vfas)
+  local limit = LIPO_CELL_MAX
+  if not vfas then
+	return 0
+  end
+  if vfas < limit + 0.5 then
+    return 1
+  end
+  if vfas < limit * 2 + 0.5 then
+    return 2
+  end
+  if vfas < limit * 3 + 0.5 then
+    return 3
+  end
+  if vfas < limit * 4 + 0.5 then
+    return 4
+  end
+  if vfas < limit * 5 + 0.5 then
+    return 5
+  end
+  if vfas < limit * 6 + 0.5 then
+    return 6
+  end
+  return 0
+end
+
 local function background()
 
   local currentTime = getTime()
@@ -79,7 +115,21 @@ local function background()
     -- Refresh Heading
     heading = getValue("Hdg")
     -- Refresh Battery Level
-    batt = math.max(0, getValue("VFAS") - SETTINGS.battMin) * 100 / (SETTINGS.battMax - SETTINGS.battMin)
+    battVolt = getValue("VFAS")
+	if currentTime > lastTimeBatt + REFRESH_FREQUENCY_2S then
+		lastTimeBatt = currentTime
+		if showBattVoltage then
+			showBattVoltage = false
+		else
+			showBattVoltage = true
+		end
+	end
+    local cellCount = detectCellCount(battVolt)
+    if cellCount == 0 then
+      batt = 0
+    else
+      batt = math.max(0, (battVolt - LIPO_CELL_LOW * cellCount) * 100 / (LIPO_DELTA * cellCount))
+    end
     -- Refresh Flight mode
     _, flightMode = getFlightMode()
     -- Refresh Accelerometer values
@@ -137,20 +187,41 @@ local function drawRSSIWidget()
 end
 
 local function drawBatteryWidget()
-  if batt < 10 then
-    lcd.drawNumber(17, 3, batt, BLINK)
-    lcd.drawText(23, 3, "%", BLINK)
-  elseif batt < 100 then
-    lcd.drawNumber(12, 3, batt)
-    lcd.drawText(23, 3, "%")
+
+  if showBattVoltage then
+	if batt < 10 then
+		if battVolt < 10 then
+			lcd.drawNumber(13, 3, battVolt * 10, BLINK + PREC1)
+			lcd.drawText(26, 3, "V", BLINK)
+		else
+			lcd.drawNumber(8, 3, battVolt * 10, BLINK + PREC1)
+			lcd.drawText(26, 3, "V", BLINK)
+		end
+	else
+		if battVolt < 10 then
+			lcd.drawNumber(13, 3, battVolt * 10, PREC1)
+			lcd.drawText(26, 3, "V", PREC1)
+		else
+			lcd.drawNumber(8, 3, battVolt * 10, PREC1)
+			lcd.drawText(26, 3, "V", PREC1)
+		end
+	end
   else
-    lcd.drawText(10, 3, "Full")
+	if batt < 10 then
+		lcd.drawNumber(17, 3, batt, BLINK)
+		lcd.drawText(23, 3, "%", BLINK)
+	elseif batt < 98 then
+		lcd.drawNumber(12, 3, batt)
+		lcd.drawText(23, 3, "%")
+	else
+		lcd.drawText(10, 3, "Full")
+	end
   end
-  if batt < 10 then
+  if batt < 20 then
     lcd.drawPixmap(10, 11, "/SCRIPTS/TELEMETRY/RESOURCEPOOL/batt-empty.bmp")
   else
     lcd.drawPixmap(10, 11, "/SCRIPTS/TELEMETRY/RESOURCEPOOL/batt.bmp")
-    if batt < 20 then
+    if batt < 26 then
       lcd.drawFilledRectangle(13, 32, 14, 4)
     elseif batt < 40 then
       lcd.drawFilledRectangle(13, 28, 14, 8)
