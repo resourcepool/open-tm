@@ -4,6 +4,8 @@ Current version: `1.2`
 
 **Open-Tm supports opentx >=2.2. Don't forget to upgrade**
 
+Looking for OpenTx Flight Logs to give you more awesomeness! Tweet if you have some to share :)
+
 ## What it is
 Open-Tm is a set of awesome telemetry screens for your favorite OpenTX Radio.
 Right now we only support Taranis X9D+
@@ -45,3 +47,9 @@ By default, the script assumes that you have a compass on your drone and that th
 
 ### 5. Enable Script as telemetry screen
 Go to your Taranis settings and enable your telemetry screen. Congrats!
+
+
+# Contribute
+Any ideas? Feature requests? Tell us about it in the "Issues" section!  
+
+Contact: Twitter @loicortola
