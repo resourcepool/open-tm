@@ -8,10 +8,13 @@ Looking for OpenTx Flight Logs to give you more awesomeness! Tweet if you have s
 
 ## What it is
 Open-Tm is a set of awesome telemetry screens for your favorite OpenTX Radio.
-Right now we only support Taranis X9D+
-
+Right now we support both Taranis X7 & Taranis X9D/X9D+
+**X9D/X9D+:**  
 ![Telemetry Example](images/screen-1.png)  
 ![Telemetry Example 2](images/screen-2.png)
+
+**X7:**  
+![Telemetry Example 3](images/screen-3.png)
 
 ## What it does
 Open-Tm pulls the telemetry data and displays it in cool widgets.
@@ -24,7 +27,7 @@ The following sensors are supported:
  * Flight Mode
  * Flight Timer
  * RSSI
- 
+
 ## Howto
 
 ### 1. Place files on SD Card
