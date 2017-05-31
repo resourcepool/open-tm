@@ -5,7 +5,7 @@ local timerNumber
 
 local function init(radio)
   timerNumber = FLIGHT_TIMER
-  layoutEngine = dofile("/SCRIPTS/TELEMETRY/RESOURCEPOOL/widgets/flighttime-" .. radio .. ".lua")
+  layoutEngine = loadScript("/SCRIPTS/TELEMETRY/RESOURCEPOOL/widgets/flighttime-" .. radio .. ".lua")()
 end
 
 local function layout()

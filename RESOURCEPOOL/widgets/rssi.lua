@@ -17,7 +17,7 @@ local layoutEngine
 local function init(radio)
   rssi = 0
   rssiPercent = 0
-  layoutEngine = dofile("/SCRIPTS/TELEMETRY/RESOURCEPOOL/widgets/rssi-" .. radio .. ".lua")
+  layoutEngine = loadScript("/SCRIPTS/TELEMETRY/RESOURCEPOOL/widgets/rssi-" .. radio .. ".lua")()
 end
 
 local function shouldRefresh(lastTimeSinceRedraw)

@@ -19,7 +19,7 @@ local horizonHeight
 local layoutEngine
 
 local function init(radio)
-  layoutEngine = dofile("/SCRIPTS/TELEMETRY/RESOURCEPOOL/widgets/horizon-" .. radio .. ".lua")
+  layoutEngine = loadScript("/SCRIPTS/TELEMETRY/RESOURCEPOOL/widgets/horizon-" .. radio .. ".lua")()
   accX = 0
   accY = 0
   accZ = 0

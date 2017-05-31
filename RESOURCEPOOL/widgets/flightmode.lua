@@ -11,7 +11,7 @@ local layoutEngine
 
 local function init(radio)
   flightMode = 0
-  layoutEngine = dofile("/SCRIPTS/TELEMETRY/RESOURCEPOOL/widgets/flightmode-" .. radio .. ".lua")
+  layoutEngine = loadScript("/SCRIPTS/TELEMETRY/RESOURCEPOOL/widgets/flightmode-" .. radio .. ".lua")()
 end
 
 local function shouldRefresh(lastTimeSinceRedraw)

@@ -23,7 +23,7 @@ local function init(radio)
   battVolt = 0
   showBattVoltage = false
   cellCount = 0
-  layoutEngine = dofile("/SCRIPTS/TELEMETRY/RESOURCEPOOL/widgets/battery-" .. radio .. ".lua")
+  layoutEngine = loadScript("/SCRIPTS/TELEMETRY/RESOURCEPOOL/widgets/battery-" .. radio .. ".lua")()
 end
 
 -- Detect Lipo Cell count

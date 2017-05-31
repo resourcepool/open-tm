@@ -11,7 +11,7 @@ local layoutEngine
 
 local function init(radio)
   heading = 0
-  layoutEngine = dofile("/SCRIPTS/TELEMETRY/RESOURCEPOOL/widgets/heading-" .. radio .. ".lua")
+  layoutEngine = loadScript("/SCRIPTS/TELEMETRY/RESOURCEPOOL/widgets/heading-" .. radio .. ".lua")()
 end
 
 local function shouldRefresh(lastTimeSinceRedraw)
