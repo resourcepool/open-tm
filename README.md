@@ -1,6 +1,6 @@
 # Open-Tm
 
-Current version: `1.4`
+Current version: `1.5`
 
 **Open-Tm supports opentx >=2.2. Don't forget to upgrade**
 
@@ -50,6 +50,13 @@ By default, the script assumes that you have a Taranis X9D/X9D+, a compass on yo
 
 ### 5. Enable Script as telemetry screen
 Go to your Taranis settings and enable your telemetry screen. Congrats!
+
+
+# Any issues?
+Having trouble on your setup? Here's a few things to check before creating an issue:
+ * Check whether you have the latest version of the OpenTX Firmware (2.2)
+ * Make sure you have the "luac" option enabled on your firmware. Otherwise flash a new firmware on OpenTX Companion
+ * Make sure you have transferred the right files in the specific directories on your SD card
 
 
 # Contribute
