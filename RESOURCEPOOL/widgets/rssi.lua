@@ -1,9 +1,8 @@
 ---------------------------------
 -- GLOBAL VARIABLES
 ---------------------------------
-local MIN_REFRESH_RSSI = 2
 
-local REFRESH_FREQUENCY_2S = 200
+local REFRESH_FREQUENCY_500MS = 50
 local SETTINGS = getGeneralSettings()
 local _,LOW_RSSI = getRSSI()
 local HIGH_RSSI = 90
@@ -23,18 +22,17 @@ end
 
 local function shouldRefresh(lastTimeSinceRedraw)
 
-  -- Redraw only every 2 seconds
-  if lastTimeSinceRedraw < REFRESH_FREQUENCY_2S then
+  -- Redraw only every 500 ms
+  if lastTimeSinceRedraw < REFRESH_FREQUENCY_500MS then
     return false
   end
   -- Refresh RSSI
   local newRssi = getRSSI()
-  if math.abs(newRssi - rssi) <= 2 then
+  if newRssi == rssi then
     return false
   end
   rssi = newRssi
   rssiPercent = math.max(0, (rssi - LOW_RSSI)) * 100 / (HIGH_RSSI - LOW_RSSI)
-
   return true
 end
 
