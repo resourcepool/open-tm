@@ -1,6 +1,6 @@
 # Open-Tm
 
-Current version: `1.2`
+Current version: `1.3`
 
 **Open-Tm supports opentx >=2.2. Don't forget to upgrade**
 
@@ -46,7 +46,7 @@ Configure your timer in order to reflect your flight time on your Radio.
 
 ### 4. Configure Script
 Open the Racer.lua file with any text editor and change the first lines according to your configuration.
-By default, the script assumes that you have a compass on your drone and that the flight timer is timer-0 (the first timer)
+By default, the script assumes that you have a Taranis X9D/X9D+, a compass on your drone and that the flight timer is timer-0 (the first timer)
 
 ### 5. Enable Script as telemetry screen
 Go to your Taranis settings and enable your telemetry screen. Congrats!
