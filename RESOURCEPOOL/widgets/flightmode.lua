@@ -1,20 +1,17 @@
 ---------------------------------
 -- GLOBAL VARIABLES
 ---------------------------------
-local WIDGET_START_X = 173
-local WIDGET_START_Y = 43
-local WIDGET_WIDTH = 40
-local WIDGET_HEIGHT = 24
-
 local REFRESH_FREQUENCY_2S = 200
 local flightMode
 ---------------------------------
 -- VARIABLES
 ---------------------------------
 local flightMode
+local layoutEngine
 
-local function init()
+local function init(radio)
   flightMode = 0
+  layoutEngine = dofile("/SCRIPTS/TELEMETRY/RESOURCEPOOL/widgets/flightmode-" .. radio .. ".lua")
 end
 
 local function shouldRefresh(lastTimeSinceRedraw)
@@ -34,13 +31,11 @@ local function shouldRefresh(lastTimeSinceRedraw)
 end
 
 local function layout()
-  lcd.drawFilledRectangle(WIDGET_START_X, WIDGET_START_Y, WIDGET_WIDTH, WIDGET_HEIGHT, ERASE)
-  lcd.drawRectangle(WIDGET_START_X, WIDGET_START_Y, WIDGET_WIDTH, WIDGET_HEIGHT, GREY_DEFAULT)
+  layoutEngine.layout()
 end
 
 local function redraw()
-  -- draw flight mode
- lcd.drawText(WIDGET_START_X + 8, WIDGET_START_Y + 7, flightMode)
+  layoutEngine.redraw(flightMode)
 end
 
 

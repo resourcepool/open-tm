@@ -2,6 +2,10 @@
 -- BEGIN OF CONFIGURATION
 ---------------------------------
 -- This is your configuration. Modify it accordingly.
+-- Tell us which radio you are using. It can be either x7 (Taranis QX7) or x9 (Taranis X9D / X9D+)
+RADIO = "x9" -- Use this line if you are using Taranis X9D / X9D +
+-- RADIO = "x7" -- Use this line if you are using Taranis QX7
+
 -- This represents the timer of your flight time. First timer has index 0, second 1, etc...
 -- You need to setup the timer yourself in your model. See docs for more details.
 FLIGHT_TIMER = 0
@@ -34,7 +38,7 @@ local firstDraw
 -- Load widget from file
 local function loadWidget(path)
   local w = dofile(path)
-  w.init()
+  w.init(RADIO)
   timerMatrix[w.tag] = 0
   refreshMatrix[w.tag] = false
   return w

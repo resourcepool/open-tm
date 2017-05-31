@@ -2,12 +2,6 @@
 -- GLOBAL VARIABLES
 ---------------------------------
 local MIN_REFRESH_VBATT = 0.2
-local WIDGET_START_X = 0
-local WIDGET_START_BATTX = 10
-local WIDGET_START_Y = 0
-local WIDGET_START_BATTY = 13
-local WIDGET_WIDTH = 40
-local WIDGET_HEIGHT = 44
 
 local REFRESH_FREQUENCY_2S = 200
 local LIPO_CELL = 3.7
@@ -22,68 +16,14 @@ local batt
 local battVolt
 local showBattVoltage
 local cellCount
+local layoutEngine
 
-local function init()
+local function init(radio)
   batt = 0
   battVolt = 0
   showBattVoltage = false
   cellCount = 0
-end
-
--- Redraw battery value in volts
-local function redrawVoltage()
-  if batt < 10 then
-    if battVolt < 10 then
-      lcd.drawNumber(WIDGET_START_BATTX + 3, WIDGET_START_Y + 3, battVolt * 10, PREC1)
-      lcd.drawText(WIDGET_START_BATTX + 16, WIDGET_START_Y + 3, "V")
-    else
-      lcd.drawNumber(WIDGET_START_BATTX - 2, WIDGET_START_Y + 3, battVolt * 10, PREC1)
-      lcd.drawText(WIDGET_START_BATTX + 16, WIDGET_START_Y + 3, "V")
-    end
-  else
-    if battVolt < 10 then
-      lcd.drawNumber(WIDGET_START_BATTX + 3, WIDGET_START_Y + 3, battVolt * 10, PREC1)
-      lcd.drawText(WIDGET_START_BATTX + 16, WIDGET_START_Y + 3, "V", PREC1)
-    else
-      lcd.drawNumber(WIDGET_START_BATTX - 2, WIDGET_START_Y + 3, battVolt * 10, PREC1)
-      lcd.drawText(WIDGET_START_BATTX + 16, WIDGET_START_Y + 3, "V", PREC1)
-    end
-  end
-end
-
--- Redraw battery value in percent
-local function redrawPercent()
-  if batt <= 2 then
-    lcd.drawText(WIDGET_START_BATTX - 3, WIDGET_START_Y + 3, "Empty")
-  elseif batt < 10 then
-    lcd.drawNumber(WIDGET_START_BATTX + 7, WIDGET_START_Y + 3, batt)
-    lcd.drawText(WIDGET_START_BATTX + 13, WIDGET_START_Y + 3, "%")
-  elseif batt < 98 then
-    lcd.drawNumber(WIDGET_START_BATTX + 2, WIDGET_START_Y + 3, batt)
-    lcd.drawText(WIDGET_START_BATTX + 13, WIDGET_START_Y + 3, "%")
-  else
-    lcd.drawText(WIDGET_START_BATTX, WIDGET_START_Y + 3, "Full")
-  end
-end
-
--- Redraw battery level
-local function redrawBattery()
-  if batt >= 20 then
-    if batt < 26 then
-      lcd.drawFilledRectangle(WIDGET_START_BATTX + 3, WIDGET_START_BATTY + 21, 14, 4)
-    elseif batt < 40 then
-      lcd.drawFilledRectangle(WIDGET_START_BATTX + 3, WIDGET_START_BATTY + 17, 14, 8)
-    elseif batt < 60 then
-      lcd.drawFilledRectangle(WIDGET_START_BATTX + 3, WIDGET_START_BATTY + 13, 14, 12)
-    elseif batt < 80 then
-      lcd.drawFilledRectangle(WIDGET_START_BATTX + 3, WIDGET_START_BATTY + 9, 14, 16)
-    else
-      lcd.drawFilledRectangle(WIDGET_START_BATTX + 3, WIDGET_START_BATTY + 5, 14, 20)
-    end
-    for i = 0,4 do
-        lcd.drawLine(WIDGET_START_BATTX + 3, WIDGET_START_BATTY + 5 + i * 4, WIDGET_START_BATTX + 16, WIDGET_START_BATTY + 5 + i * 4, SOLID, GREY_DEFAULT)
-    end
-  end
+  layoutEngine = dofile("/SCRIPTS/TELEMETRY/RESOURCEPOOL/widgets/battery-" .. radio .. ".lua")
 end
 
 -- Detect Lipo Cell count
@@ -135,23 +75,11 @@ local function shouldRefresh(lastTimeSinceRedraw)
 end
 
 local function layout()
-  lcd.drawFilledRectangle(WIDGET_START_X, WIDGET_START_Y, WIDGET_WIDTH, WIDGET_HEIGHT, ERASE)
-  if batt < 20 then
-    lcd.drawPixmap(WIDGET_START_BATTX, WIDGET_START_BATTY, "/SCRIPTS/TELEMETRY/RESOURCEPOOL/images/batt-empty.bmp")
-  else
-    lcd.drawPixmap(WIDGET_START_BATTX, WIDGET_START_BATTY, "/SCRIPTS/TELEMETRY/RESOURCEPOOL/images/batt.bmp")
-  end
-  lcd.drawRectangle(WIDGET_START_X, WIDGET_START_Y, WIDGET_WIDTH, WIDGET_HEIGHT, GREY_DEFAULT)
+  layoutEngine.layout(batt)
 end
 
 local function redraw()
-  if showBattVoltage then
-    redrawVoltage()
-  else
-    redrawPercent()
-  end
-  redrawBattery()
+  layoutEngine.redraw(showBattVoltage, batt, battVolt)
 end
-
 
 return { tag = "battery", init = init, layout = layout, redraw = redraw, shouldRefresh = shouldRefresh }
