@@ -1,6 +1,6 @@
 # Open-Tm
 
-Current version: `1.3`
+Current version: `1.4`
 
 **Open-Tm supports opentx >=2.2. Don't forget to upgrade**
 
