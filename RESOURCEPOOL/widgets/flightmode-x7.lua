@@ -3,8 +3,8 @@
 ---------------------------------
 local WIDGET_START_X = 107
 local WIDGET_START_Y = 55
-local WIDGET_WIDTH = 22
-local WIDGET_HEIGHT = 10
+local WIDGET_WIDTH = 21
+local WIDGET_HEIGHT = 9
 
 local function layout()
   lcd.drawFilledRectangle(WIDGET_START_X, WIDGET_START_Y, WIDGET_WIDTH, WIDGET_HEIGHT, ERASE)
