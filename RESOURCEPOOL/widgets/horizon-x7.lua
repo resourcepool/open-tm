@@ -3,8 +3,8 @@
 ---------------------------------
 local WIDGET_START_X = 33
 local WIDGET_START_Y = 16
-local WIDGET_WIDTH = 96
-local WIDGET_HEIGHT = 49
+local WIDGET_WIDTH = 95
+local WIDGET_HEIGHT = 48
 local HORIZON_WIDTH = 86
 local HORIZON_HEIGHT = 43
 

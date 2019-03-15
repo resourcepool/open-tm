@@ -4,7 +4,7 @@
 local WIDGET_START_X = 0
 local WIDGET_START_Y = 51
 local WIDGET_WIDTH = 34
-local WIDGET_HEIGHT = 14
+local WIDGET_HEIGHT = 13
 ---------------------------------
 -- VARIABLES
 ---------------------------------

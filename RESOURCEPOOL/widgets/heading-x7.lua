@@ -3,7 +3,7 @@
 ---------------------------------
 local WIDGET_START_X = 33
 local WIDGET_START_Y = 0
-local WIDGET_WIDTH = 96
+local WIDGET_WIDTH = 95
 local WIDGET_HEIGHT = 17
 
 ---------------------------------
